@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent -->
+    <parent>
+        <groupId>com.github.hexocraft-lib</groupId>
+        <artifactId>hexocraftlib</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../HexoCraftLib</relativePath>
+    </parent>
+
+    <!-- Artifact properties -->
+    <groupId>com.github.hexocraft-lib</groupId>
+    <artifactId>utilities</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <!-- Info -->
+    <name>${project.artifactId}</name>
+    <description></description>
+    <url>https://github.com/HexoCraft-lib/utilities</url>
+
+    <!-- Source control -->
+    <scm>
+        <connection>scm:git:git://github.com/HexoCraft-lib/Utilities.git</connection>
+        <developerConnection>scm:git:git@github.com:HexoCraft-lib/Utilities.git</developerConnection>
+        <url>http://github.com/HexoCraft-lib/utilities</url>
+    </scm>
+
+    <!-- Issue management -->
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/HexoCraft-lib/Utilities/issues</url>
+    </issueManagement>
+
+    <!-- Jenkins server -->
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://jenkins.hexocube.fr/job/HexoCraft-lib/job/Utilities</url>
+    </ciManagement>
+
+    <!-- Properties -->
+    <properties>
+        <shade.pattern>com.hexocraft.lib.utilities</shade.pattern>
+    </properties>
+
+    <!-- HexoCraft artifactory repository should have all needed artifacts to build the libs -->
+    <repositories>
+        <repository>
+            <id>hexocraft-repo</id>
+            <url>http://repo.hexocube.fr/artifactory/public</url>
+        </repository>
+    </repositories>
+
+    <!-- Dependencies -->
+    <dependencies>
+        <!-- Bukkit -->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- Build options -->
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
+        <!-- Plugins -->
+        <plugins>
+            <!-- Shade -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <minimizeJar>false</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.commons.io</pattern>
+                                    <shadedPattern>${shade.pattern}.io</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Source -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>
