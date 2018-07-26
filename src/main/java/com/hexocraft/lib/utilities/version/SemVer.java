@@ -291,11 +291,11 @@ public final class SemVer implements Comparable<SemVer> {
     //--------------------------------------------------------------------------
 
     /**
-     * todo
+     * Validate a pre-release tag
      *
-     * @param preRelease
+     * @param preRelease Tag to validate
      *
-     * @return
+     * @return A list of valid pre-release tags
      */
     private ArrayList<String> validatePreRelease(String preRelease) {
         if (preRelease == null || preRelease.length() == 0)
@@ -304,11 +304,11 @@ public final class SemVer implements Comparable<SemVer> {
     }
 
     /**
-     * todo
+     * Validate pre-release tags
      *
-     * @param preRelease
+     * @param preRelease Tags to validate
      *
-     * @return
+     * @return A list of valid pre-release tags
      */
     private ArrayList<String> validatePreRelease(@Nonnull ArrayList<String> preRelease) {
         // Array of valid pre-release tags
@@ -333,11 +333,11 @@ public final class SemVer implements Comparable<SemVer> {
     }
 
     /**
-     * todo
+     * Validate a build meta data tag
      *
-     * @param buildMetaData
+     * @param buildMetaData Tag to validate
      *
-     * @return
+     * @return build meta data tag if valid
      */
     private String validateBuildMetaData(String buildMetaData) {
         if (buildMetaData == null || buildMetaData.length() == 0)
