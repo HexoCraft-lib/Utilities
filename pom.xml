@@ -60,6 +60,12 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
         </dependency>
+        <!-- MineMock -->
+        <dependency>
+            <groupId>com.github.hexocraft-lib</groupId>
+            <artifactId>minemock-bukkit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!-- Build options -->

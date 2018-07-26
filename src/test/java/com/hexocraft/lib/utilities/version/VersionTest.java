@@ -4,7 +4,7 @@ package com.hexocraft.lib.utilities.version;
 
  Copyright 2018 hexosse
 
- Licensed under the Apache License, Version 2.0 (the "License");
+ Licensed under the Apache License, Version 2.0 (the "License")
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
@@ -17,21 +17,33 @@ package com.hexocraft.lib.utilities.version;
  limitations under the License.
 
  */
-import mock.FakePlugin;
+import com.github.hexocraft.lib.MineMock;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VersionTest {
 
+    private JavaPlugin plugin;
 
-    private JavaPlugin plugin = FakePlugin.get();
+
+    @BeforeAll
+    public void init() {
+        MineMock.start();
+        plugin = MineMock.createFakePlugin("Fake plugin", "1.0.0");
+    }
+
+    @AfterAll
+    public static void cleanUp() {
+        MineMock.stop();
+    }
 
     @Test
     void constructors() {
@@ -41,41 +53,41 @@ class VersionTest {
 
     @Test
     void parser() {
-        assertTrue(Version.isSemver("0.1.2"));
-        assertTrue(Version.isSemver("1.2.3"));
-        assertTrue(Version.isSemver("10.20.3"));
-        assertTrue(Version.isSemver("1.2.3-alpha.23-pre"));
-        assertTrue(Version.isSemver("12.12.3-123.hexagon+dontmakemecompileplea.se"));
-        assertTrue(Version.isSemver("1.2.3-alpha-dev.51-something+mybuild-1-4-1975-clang"));
-        assertTrue(Version.isSemver("4.3.22+mybuild"));
-        assertTrue(Version.isSemver("4.1.405+hexa.13331-objectfiles"));
+        assertTrue(Version.isSemVer("0.1.2"));
+        assertTrue(Version.isSemVer("1.2.3"));
+        assertTrue(Version.isSemVer("10.20.3"));
+        assertTrue(Version.isSemVer("1.2.3-alpha.23-pre"));
+        assertTrue(Version.isSemVer("12.12.3-123.hexagon+dontmakemecompileplea.se"));
+        assertTrue(Version.isSemVer("1.2.3-alpha-dev.51-something+mybuild-1-4-1975-clang"));
+        assertTrue(Version.isSemVer("4.3.22+mybuild"));
+        assertTrue(Version.isSemVer("4.1.405+hexa.13331-objectfiles"));
 
-        assertTrue(Version.isSemver(plugin));
+        assertTrue(Version.isSemVer(plugin));
         assertEquals(Version.parse(plugin).toString(), "1.0.0");
 
-        assertFalse(Version.isSemver("1.0"));
+        assertFalse(Version.isSemVer("1.0"));
 
-        assertFalse(Version.isSemver("01.2.3"));
-        assertFalse(Version.isSemver("1.02.3"));
-        assertFalse(Version.isSemver("2.3.04"));
-        assertFalse(Version.isSemver("a.1.1"));
-        assertFalse(Version.isSemver("1.a.1"));
-        assertFalse(Version.isSemver("1.1.a"));
-        assertFalse(Version.isSemver("1.2.3-rele..ase+build"));
-        assertFalse(Version.isSemver("1.2.3-release-something+..build"));
-        assertFalse(Version.isSemver("1.2.3-rele--ase+build"));
-        assertFalse(Version.isSemver("1.2.3-release-something+--build"));
-        assertFalse(Version.isSemver("1.2.3-release++build"));
-        assertFalse(Version.isSemver("1.2.3+-release-something-build"));
+        assertFalse(Version.isSemVer("01.2.3"));
+        assertFalse(Version.isSemVer("1.02.3"));
+        assertFalse(Version.isSemVer("2.3.04"));
+        assertFalse(Version.isSemVer("a.1.1"));
+        assertFalse(Version.isSemVer("1.a.1"));
+        assertFalse(Version.isSemVer("1.1.a"));
+        assertFalse(Version.isSemVer("1.2.3-rele..ase+build"));
+        assertFalse(Version.isSemVer("1.2.3-release-something+..build"));
+        assertFalse(Version.isSemVer("1.2.3-rele--ase+build"));
+        assertFalse(Version.isSemVer("1.2.3-release-something+--build"));
+        assertFalse(Version.isSemVer("1.2.3-release++build"));
+        assertFalse(Version.isSemVer("1.2.3+-release-something-build"));
 
 
-        assertFalse(Version.isSemver("v1.0.0"));
+        assertFalse(Version.isSemVer("v1.0.0"));
         assertEquals(new Version("v1.0.0").toString(), "1.0.0");
 
-        assertFalse(Version.isSemver("v1.0"));
+        assertFalse(Version.isSemVer("v1.0"));
         assertEquals(new Version("v1.0").toString(), "1.0.0");
 
-        assertFalse(Version.isSemver("no number"));
+        assertFalse(Version.isSemVer("no number"));
         assertEquals(Version.parse("no number"), null);
         assertThrows(IllegalArgumentException.class, () -> new Version("no number"));
     }

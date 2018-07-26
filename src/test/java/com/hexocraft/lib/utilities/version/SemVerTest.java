@@ -4,7 +4,7 @@ package com.hexocraft.lib.utilities.version;
 
  Copyright 2018 hexosse
 
- Licensed under the Apache License, Version 2.0 (the "License");
+ Licensed under the Apache License, Version 2.0 (the "License")
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
@@ -18,20 +18,34 @@ package com.hexocraft.lib.utilities.version;
 
  */
 
-import mock.FakePlugin;
+import com.github.hexocraft.lib.MineMock;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SemVerTest {
 
-    private JavaPlugin plugin = FakePlugin.get();
+    private JavaPlugin plugin;
+
+
+    @BeforeAll
+    public void init() {
+        MineMock.start();
+        plugin = MineMock.createFakePlugin("Fake plugin", "1.0.0");
+    }
+
+    @AfterAll
+    public static void cleanUp() {
+        MineMock.stop();
+    }
 
     @Test
     void constructors() {
@@ -95,27 +109,25 @@ class SemVerTest {
     }
 
     /**
-     * Precedence refers to how versions are compared to each other when ordered. Precedence MUST be
-     * calculated by separating the version into major, minor, patch and pre-release identifiers in
-     * that order (Build metadata does not figure into precedence).
-     * Precedence is determined by the first difference when comparing each of these identifiers
-     * from left to right as follows: Major, minor, and patch versions are always compared numerically.
+     * Precedence refers to how versions are compared to each other when ordered. Precedence MUST be calculated by
+     * separating the version into major, minor, patch and pre-release identifiers in that order (Build metadata does
+     * not figure into precedence). Precedence is determined by the first difference when comparing each of these
+     * identifiers from left to right as follows: Major, minor, and patch versions are always compared numerically.
      * <p>
      * Example: 1.0.0 < 2.0.0 < 2.1.0 < 2.1.1.
      * <p>
-     * When major, minor, and patch are equal, a pre-release version has lower precedence than a normal
-     * version.
+     * When major, minor, and patch are equal, a pre-release version has lower precedence than a normal version.
      * <p>
      * Example: 1.0.0-alpha < 1.0.0.
      * <p>
-     * Precedence for two pre-release versions with the same major, minor, and patch version MUST be
-     * determined by comparing each dot separated identifier from left to right until a difference is
-     * found as follows: identifiers consisting of only digits are compared numerically and identifiers
-     * with letters or hyphens are compared lexically in ASCII sort order. Numeric identifiers always
-     * have lower precedence than non-numeric identifiers. A larger set of pre-release fields has a
-     * higher precedence than a smaller set, if all of the preceding identifiers are equal.
+     * Precedence for two pre-release versions with the same major, minor, and patch version MUST be determined by
+     * comparing each dot separated identifier from left to right until a difference is found as follows: identifiers
+     * consisting of only digits are compared numerically and identifiers with letters or hyphens are compared lexically
+     * in ASCII sort order. Numeric identifiers always have lower precedence than non-numeric identifiers. A larger set
+     * of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal.
      * <p>
-     * Example: 1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0-rc.1 < 1.0.0.
+     * Example: 1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0-rc.1
+     * < 1.0.0.
      * <p>
      * Example: 1.0.0-alpha-alpha.1 < 1.0.0-alpha-alpha.1-0
      * <p>
