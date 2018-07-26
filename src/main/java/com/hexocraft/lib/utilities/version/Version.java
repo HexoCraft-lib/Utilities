@@ -4,7 +4,7 @@ package com.hexocraft.lib.utilities.version;
 
  Copyright 2018 hexosse
 
- Licensed under the Apache License, Version 2.0 (the "License");
+ Licensed under the Apache License, Version 2.0 (the "License")
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
@@ -80,7 +80,6 @@ public final class Version implements Comparable<Version> {
             this.major = semver.major;
             this.minor = semver.minor;
             this.patch = semver.patch;
-            return;
         }
 
         // Try to extract a version number
@@ -195,7 +194,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if valid
      */
-    public static boolean isSemver(String version) {
+    public static boolean isSemVer(String version) {
         return SemVer.parse(version) != null;
     }
 
@@ -206,7 +205,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if valid
      */
-    public static boolean isSemver(JavaPlugin plugin) {
+    public static boolean isSemVer(JavaPlugin plugin) {
         return SemVer.parse(plugin) != null;
     }
 

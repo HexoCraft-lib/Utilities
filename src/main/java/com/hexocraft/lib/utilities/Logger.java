@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
  Copyright 2018 hexosse
 
- Licensed under the Apache License, Version 2.0 (the "License");
+ Licensed under the Apache License, Version 2.0 (the "License")
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
@@ -25,44 +25,46 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 /**
- * Simple access to the logger
+ * Simple access to the jLogger
  */
 public class Logger {
 
-    private static java.util.logging.Logger logger = null;
+    private static java.util.logging.Logger jLogger = null;
 
 
     private Logger() {
-        throw new RuntimeException("This is a private constructor");
+        throw new IllegalAccessError("This is a private constructor");
     }
 
     /**
-     * Find the more appropriate logger
+     * Find the more appropriate jLogger
      *
      * @return Logger
      */
-    private synchronized static java.util.logging.Logger get() {
-        if (logger == null) {
+    private static synchronized java.util.logging.Logger get() {
+        if (jLogger == null) {
 
             try {
-                logger = JavaPlugin.getProvidingPlugin(Logger.class).getLogger();
+                jLogger = JavaPlugin.getProvidingPlugin(Logger.class).getLogger();
             }
             catch (Exception ignored) {
+                // This Exception is ignored
             }
 
-            if (logger == null) {
+            if (jLogger == null) {
                 try {
-                    logger = Bukkit.getLogger();
+                    jLogger = Bukkit.getLogger();
                 }
                 catch (Exception ignored) {
+                    // This Exception is ignored
                 }
             }
 
-            if (logger == null) {
-                logger = java.util.logging.Logger.getLogger("HexoCraft-Logger");
+            if (jLogger == null) {
+                jLogger = java.util.logging.Logger.getLogger("HexoCraft-Logger");
             }
         }
-        return logger;
+        return jLogger;
     }
 
 

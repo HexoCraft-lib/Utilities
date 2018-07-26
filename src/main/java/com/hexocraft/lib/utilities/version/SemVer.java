@@ -4,7 +4,7 @@ package com.hexocraft.lib.utilities.version;
 
  Copyright 2018 hexosse
 
- Licensed under the Apache License, Version 2.0 (the "License");
+ Licensed under the Apache License, Version 2.0 (the "License")
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
@@ -65,7 +65,7 @@ public final class SemVer implements Comparable<SemVer> {
     /**
      * Pre-release tags (potentially empty, but never null).
      */
-    private final ArrayList<String> preRelease;
+    private final List<String> preRelease;
 
     /**
      * Build meta data tags (potentially empty, but never null).
@@ -109,11 +109,11 @@ public final class SemVer implements Comparable<SemVer> {
      * @param preRelease pre release identifiers.
      * @param buildMetaData build meta identifier.
      */
-    public SemVer(@Nonnegative int major, @Nonnegative int minor, @Nonnegative int patch, ArrayList<String> preRelease, String buildMetaData) {
+    public SemVer(@Nonnegative int major, @Nonnegative int minor, @Nonnegative int patch, List<String> preRelease, String buildMetaData) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
-        this.preRelease = preRelease != null ? validatePreRelease(preRelease) : null;
+        this.preRelease = preRelease != null ? validatePreRelease(preRelease) : Collections.emptyList();
         this.buildMetaData = buildMetaData != null ? validateBuildMetaData(buildMetaData) : null;
     }
 
@@ -172,7 +172,7 @@ public final class SemVer implements Comparable<SemVer> {
      * @return true if the major version number is greater than zero and there are no pre release tags.
      */
     public boolean isStable() {
-        return major > 0 && preRelease == null;
+        return major > 0 && preRelease.isEmpty();
     }
 
     /**
@@ -198,9 +198,7 @@ public final class SemVer implements Comparable<SemVer> {
      * @return true if the tag is found in {@link SemVer#buildMetaData}.
      */
     public boolean hasBuildMetaTag(@Nonnull String buildMeta) {
-        if (buildMetaData.equals(buildMeta))
-            return true;
-        return false;
+        return buildMetaData.equals(buildMeta);
     }
 
     public boolean isGreaterThan(@Nonnull SemVer other) {
@@ -297,9 +295,9 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @return A list of valid pre-release tags
      */
-    private ArrayList<String> validatePreRelease(String preRelease) {
+    private List<String> validatePreRelease(String preRelease) {
         if (preRelease == null || preRelease.length() == 0)
-            return null;
+            return Collections.emptyList();
         return validatePreRelease(new ArrayList<>(Arrays.asList(preRelease)));
     }
 
@@ -310,9 +308,9 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @return A list of valid pre-release tags
      */
-    private ArrayList<String> validatePreRelease(@Nonnull ArrayList<String> preRelease) {
+    private List<String> validatePreRelease(@Nonnull List<String> preRelease) {
         // Array of valid pre-release tags
-        ArrayList<String> validPreReleaseTags = new ArrayList<>();
+        List<String> validPreReleaseTags = new ArrayList<>();
 
         // Pattern used to validate pre-release tags
         Pattern p = Pattern.compile("^(?!.*\\-{2}.*)(?!.*\\.{2}.*)([a-zA-Z0-9\\.\\-]+)$");
@@ -324,9 +322,7 @@ public final class SemVer implements Comparable<SemVer> {
                 throw new IllegalArgumentException("Invalid pre-release tag: " + pre);
             }
             // Add to the valid tags
-            for (String tag : pre.split("\\-")) {
-                validPreReleaseTags.add(tag);
-            }
+            validPreReleaseTags.addAll(Arrays.asList(pre.split("\\-")));
         }
 
         return validPreReleaseTags;
@@ -385,10 +381,11 @@ public final class SemVer implements Comparable<SemVer> {
         return 0;
     }
 
-    private int comparePreReleaseTo(ArrayList<String> other) {
-        if (this.preRelease == null && other == null) return 0;
-        if (this.preRelease != null && other == null) return -1;
-        if (this.preRelease == null && other != null) return 1;
+    private int comparePreReleaseTo(List<String> other) {
+
+        if (this.preRelease.isEmpty() == true  && other.isEmpty() == true) return 0;
+        if (this.preRelease.isEmpty() == false && other.isEmpty() == true) return -1;
+        if (this.preRelease.isEmpty() == true  && other.isEmpty() == false) return 1;
 
         NumberAwareStringComparator comparator = NumberAwareStringComparator.INSTANCE;
 
@@ -399,14 +396,16 @@ public final class SemVer implements Comparable<SemVer> {
 
         if (preReleaseOrdered.size() == otherPreReleaseOrdered.size()) {
             return comparator.compare(preReleaseOrdered.get(0), otherPreReleaseOrdered.get(0));
-        } else if (preReleaseOrdered.size() >= otherPreReleaseOrdered.size()) {
+        }
+        else if (preReleaseOrdered.size() >= otherPreReleaseOrdered.size()) {
             int comparison = 0;
             for (int i = 0; i < otherPreReleaseOrdered.size(); i++) {
                 comparison = comparator.compare(preReleaseOrdered.get(i), otherPreReleaseOrdered.get(i));
                 if (comparison != 0) return comparison;
             }
             return 1;
-        } else {
+        }
+        else {
             int comparison = 0;
             for (int i = 0; i < preReleaseOrdered.size(); i++) {
                 comparison = comparator.compare(preReleaseOrdered.get(i), otherPreReleaseOrdered.get(i));
@@ -427,15 +426,18 @@ public final class SemVer implements Comparable<SemVer> {
 
         if (major != semVer.major || minor != semVer.minor || patch != semVer.patch)
             return false;
-        if (preRelease != null ? !preReleaseEquals(semVer.preRelease) : semVer.preRelease != null)
+        if (!preReleaseEquals(semVer.preRelease))
             return false;
         return buildMetaData != null ? buildMetaData.equals(semVer.buildMetaData) : semVer.buildMetaData == null;
     }
 
-    private boolean preReleaseEquals(ArrayList<String> other) {
-        List<String> preRelease = new ArrayList<>(this.preRelease);
-        preRelease.retainAll(other);
-        return preRelease.size() > 0;
+    private boolean preReleaseEquals(List<String> other) {
+        if(this.preRelease.isEmpty() && other.isEmpty())
+            return true;
+        // At least one tag must correspond
+        List<String> tmpPreRelease = new ArrayList<>(this.preRelease);
+        tmpPreRelease.retainAll(other);
+        return !tmpPreRelease.isEmpty();
     }
 
     @Override
