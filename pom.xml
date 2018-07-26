@@ -19,13 +19,13 @@
     <!-- Info -->
     <name>${project.artifactId}</name>
     <description></description>
-    <url>https://github.com/HexoCraft-lib/utilities</url>
+    <url>https://github.com/HexoCraft-lib/Utilities</url>
 
     <!-- Source control -->
     <scm>
         <connection>scm:git:git://github.com/HexoCraft-lib/Utilities.git</connection>
         <developerConnection>scm:git:git@github.com:HexoCraft-lib/Utilities.git</developerConnection>
-        <url>http://github.com/HexoCraft-lib/utilities</url>
+        <url>http://github.com/HexoCraft-lib/Utilities</url>
     </scm>
 
     <!-- Issue management -->
