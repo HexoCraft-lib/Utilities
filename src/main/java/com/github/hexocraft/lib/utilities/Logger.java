@@ -1,4 +1,4 @@
-package com.hexocraft.lib.utilities;
+package com.github.hexocraft.lib.utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
  Copyright 2018 hexosse
 
- Licensed under the Apache License, Version 2.0 (the "License")
+ Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 

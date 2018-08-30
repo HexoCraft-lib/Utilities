@@ -1,10 +1,10 @@
-package com.hexocraft.lib.utilities;
+package com.github.hexocraft.lib.utilities;
 
 /*
 
  Copyright 2018 hexosse
 
- Licensed under the Apache License, Version 2.0 (the "License")
+ Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
@@ -19,8 +19,7 @@ package com.hexocraft.lib.utilities;
  */
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+
 
 class LoggerTest {
 

@@ -42,7 +42,7 @@
 
     <!-- Properties -->
     <properties>
-        <shade.pattern>com.hexocraft.lib.utilities</shade.pattern>
+        <shade.pattern>com.github.hexocraft.lib.utilities</shade.pattern>
     </properties>
 
     <!-- HexoCraft artifactory repository should have all needed artifacts to build the libs -->
