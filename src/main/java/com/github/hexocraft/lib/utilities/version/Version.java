@@ -19,6 +19,9 @@ package com.github.hexocraft.lib.utilities.version;
  */
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +51,7 @@ public final class Version implements Comparable<Version> {
     /**
      * If the version is Semantic Versioning compliant.
      */
-    private final SemVer semver;
+    private final @Nullable SemVer semver;
 
 
     /**
@@ -56,7 +59,7 @@ public final class Version implements Comparable<Version> {
      * @param minor minor version number (must not be negative).
      * @param patch patch level (must not be negative).
      */
-    public Version(int major, int minor, int patch) {
+    public Version(@NonNegative int major, @NonNegative int minor, @NonNegative int patch) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
@@ -68,7 +71,7 @@ public final class Version implements Comparable<Version> {
      *
      * @param version semver string to parse
      */
-    public Version(String version) {
+    public Version(@NonNull String version) {
 
         // Check if it is Semantic Versioning compliant
         this.semver = SemVer.parse(version);
@@ -124,11 +127,11 @@ public final class Version implements Comparable<Version> {
         }
     }
 
-    public boolean isGreaterThan(Version other) {
+    public boolean isGreaterThan(@NonNull Version other) {
         return this.compareTo(other) > 0;
     }
 
-    public boolean isLessThan(Version other) {
+    public boolean isLessThan(@NonNull Version other) {
         return this.compareTo(other) < 0;
     }
 
@@ -139,7 +142,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if this version is newer than the other one.
      */
-    public boolean isUpdateFor(Version other) {
+    public boolean isUpdateFor(@NonNull Version other) {
         return this.isGreaterThan(other);
     }
 
@@ -150,7 +153,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if this version is newer and both have the same major version.
      */
-    public boolean isCompatibleUpdateFor(Version other) {
+    public boolean isCompatibleUpdateFor(@NonNull Version other) {
         return this.isUpdateFor(other) && (this.major == other.major);
     }
 
@@ -165,7 +168,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return {@link Version} if the string is semver compliant else null
      */
-    public static Version parse(String version) {
+    public static @Nullable Version parse(@NonNull String version) {
         try {
             return new Version(version);
         }
@@ -181,7 +184,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return {@link Version} if the string contain a version number else null
      */
-    public static Version parse(JavaPlugin plugin) {
+    public static @Nullable Version parse(@NonNull JavaPlugin plugin) {
         return Version.parse(plugin.getDescription().getVersion());
     }
 
@@ -192,7 +195,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if valid
      */
-    public static boolean isSemVer(String version) {
+    public static boolean isSemVer(@NonNull String version) {
         return SemVer.parse(version) != null;
     }
 
@@ -203,7 +206,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if valid
      */
-    public static boolean isSemVer(JavaPlugin plugin) {
+    public static boolean isSemVer(@NonNull JavaPlugin plugin) {
         return SemVer.parse(plugin) != null;
     }
 
@@ -218,20 +221,21 @@ public final class Version implements Comparable<Version> {
      * @return final comparison result
      */
     @Override
-    public int compareTo(Version other) {
-        if (semver != null && other.isSemVer()) {
+    public int compareTo(@NonNull Version other) {
+
+        if (semver != null && other.semver != null) {
             return semver.compareTo(other.semver);
         } else {
             // Major
-            int comparison = ((major < other.major) ? -1 : ((major > other.major) ? 1 : 0));
+            int comparison = (Integer.compare(major, other.major));
             if (comparison != 0) return comparison;
 
             // Minor
-            comparison = ((minor < other.minor) ? -1 : ((minor > other.minor) ? 1 : 0));
+            comparison = (Integer.compare(minor, other.minor));
             if (comparison != 0) return comparison;
 
             // Patch
-            comparison = ((patch < other.patch) ? -1 : ((patch > other.patch) ? 1 : 0));
+            comparison = (Integer.compare(patch, other.patch));
             if (comparison != 0) return comparison;
         }
 
@@ -239,7 +243,7 @@ public final class Version implements Comparable<Version> {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
         if (this == other)
             return true;
         if (other == null || getClass() != other.getClass())

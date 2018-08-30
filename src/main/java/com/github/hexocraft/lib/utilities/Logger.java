@@ -2,6 +2,7 @@ package com.github.hexocraft.lib.utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 /*
 
@@ -29,7 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Logger {
 
-    private static java.util.logging.Logger jLogger = null;
+    private static java.util.logging. @MonotonicNonNull Logger jLogger;
 
 
     private Logger() {
