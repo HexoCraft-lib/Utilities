@@ -20,8 +20,6 @@ package com.github.hexocraft.lib.utilities.version;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,7 +56,7 @@ public final class Version implements Comparable<Version> {
      * @param minor minor version number (must not be negative).
      * @param patch patch level (must not be negative).
      */
-    public Version(@Nonnegative int major, @Nonnegative int minor, @Nonnegative int patch) {
+    public Version(int major, int minor, int patch) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
@@ -70,7 +68,7 @@ public final class Version implements Comparable<Version> {
      *
      * @param version semver string to parse
      */
-    public Version(@Nonnull String version) {
+    public Version(String version) {
 
         // Check if it is Semantic Versioning compliant
         this.semver = SemVer.parse(version);
@@ -126,11 +124,11 @@ public final class Version implements Comparable<Version> {
         }
     }
 
-    public boolean isGreaterThan(@Nonnull Version other) {
+    public boolean isGreaterThan(Version other) {
         return this.compareTo(other) > 0;
     }
 
-    public boolean isLessThan(@Nonnull Version other) {
+    public boolean isLessThan(Version other) {
         return this.compareTo(other) < 0;
     }
 
@@ -141,7 +139,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if this version is newer than the other one.
      */
-    public boolean isUpdateFor(@Nonnull Version other) {
+    public boolean isUpdateFor(Version other) {
         return this.isGreaterThan(other);
     }
 
@@ -152,7 +150,7 @@ public final class Version implements Comparable<Version> {
      *
      * @return true if this version is newer and both have the same major version.
      */
-    public boolean isCompatibleUpdateFor(@Nonnull Version other) {
+    public boolean isCompatibleUpdateFor(Version other) {
         return this.isUpdateFor(other) && (this.major == other.major);
     }
 

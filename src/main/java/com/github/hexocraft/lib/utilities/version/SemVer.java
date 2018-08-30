@@ -21,8 +21,6 @@ package com.github.hexocraft.lib.utilities.version;
 import com.github.hexocraft.lib.utilities.comparator.NumberAwareStringComparator;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -77,7 +75,7 @@ public final class SemVer implements Comparable<SemVer> {
      * @param minor minor version number (must not be negative).
      * @param patch patch level (must not be negative).
      */
-    public SemVer(@Nonnegative int major, @Nonnegative int minor, @Nonnegative int patch) {
+    public SemVer(int major, int minor, int patch) {
         this(major, minor, patch, (ArrayList<String>) null, null);
     }
 
@@ -87,7 +85,7 @@ public final class SemVer implements Comparable<SemVer> {
      * @param patch patch level (must not be negative).
      * @param preRelease pre release identifiers.
      */
-    public SemVer(@Nonnegative int major, @Nonnegative int minor, @Nonnegative int patch, String preRelease) {
+    public SemVer(int major, int minor, int patch, String preRelease) {
         this(major, minor, patch, new ArrayList<>(Collections.singletonList(preRelease)), null);
     }
 
@@ -98,7 +96,7 @@ public final class SemVer implements Comparable<SemVer> {
      * @param preRelease pre release identifiers.
      * @param buildMetaData build meta identifier.
      */
-    public SemVer(@Nonnegative int major, @Nonnegative int minor, @Nonnegative int patch, String preRelease, String buildMetaData) {
+    public SemVer(int major, int minor, int patch, String preRelease, String buildMetaData) {
         this(major, minor, patch, new ArrayList<>(Collections.singletonList(preRelease)), buildMetaData);
     }
 
@@ -109,7 +107,7 @@ public final class SemVer implements Comparable<SemVer> {
      * @param preRelease pre release identifiers.
      * @param buildMetaData build meta identifier.
      */
-    public SemVer(@Nonnegative int major, @Nonnegative int minor, @Nonnegative int patch, List<String> preRelease, String buildMetaData) {
+    public SemVer(int major, int minor, int patch, List<String> preRelease, String buildMetaData) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
@@ -122,7 +120,7 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @param version version in flat string format
      */
-    public SemVer(@Nonnull String version) {
+    public SemVer(String version) {
 
         // Pattern used to validate pre-release tags
         final Pattern p = Pattern.compile("^(?!.*\\-{2}.*)(?!.*\\+{2}.*)(?!.*\\.{2}.*)(?!.*\\+\\-.*)(?!.*\\-\\+.*)(?<Major>(?!0)(\\d*)|([0^\\d]))\\.(?<Minor>(?!0)(\\d*)|([0^\\d]))\\.(?<Patch>(?!0)(\\d*)|([0^\\d]))(?![\\+\\-][^a-zA-Z0-9])(\\-(?<PreRelease>[a-zA-Z0-9\\.-]+))?(\\+(?<Build>[a-zA-Z0-9\\.-]+))?$");
@@ -182,7 +180,7 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @return true if the tag is found in {@link SemVer#preRelease}.
      */
-    public boolean hasPreReleaseTag(@Nonnull String tag) {
+    public boolean hasPreReleaseTag(String tag) {
         for (String s : preRelease) {
             if (s.equals(tag))
                 return true;
@@ -197,15 +195,15 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @return true if the tag is found in {@link SemVer#buildMetaData}.
      */
-    public boolean hasBuildMetaTag(@Nonnull String buildMeta) {
+    public boolean hasBuildMetaTag(String buildMeta) {
         return buildMetaData.equals(buildMeta);
     }
 
-    public boolean isGreaterThan(@Nonnull SemVer other) {
+    public boolean isGreaterThan(SemVer other) {
         return this.compareTo(other) > 0;
     }
 
-    public boolean isLessThan(@Nonnull SemVer other) {
+    public boolean isLessThan(SemVer other) {
         return this.compareTo(other) < 0;
     }
 
@@ -216,7 +214,7 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @return true if this version is newer than the other one.
      */
-    public boolean isUpdateFor(@Nonnull SemVer other) {
+    public boolean isUpdateFor(SemVer other) {
         return this.isGreaterThan(other);
     }
 
@@ -227,7 +225,7 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @return true if this version is newer and both have the same major version.
      */
-    public boolean isUpdateCompatibleFor(@Nonnull SemVer other) {
+    public boolean isUpdateCompatibleFor(SemVer other) {
         return this.isUpdateFor(other) && (this.major == other.major);
     }
 
@@ -308,7 +306,7 @@ public final class SemVer implements Comparable<SemVer> {
      *
      * @return A list of valid pre-release tags
      */
-    private List<String> validatePreRelease(@Nonnull List<String> preRelease) {
+    private List<String> validatePreRelease(List<String> preRelease) {
         // Array of valid pre-release tags
         List<String> validPreReleaseTags = new ArrayList<>();
 
